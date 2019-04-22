@@ -6,4 +6,4 @@ class HomeForm(forms.ModelForm):
     
     class Meta:
         model = Url
-        fields = ('url', )
+        fields = ('url',)
