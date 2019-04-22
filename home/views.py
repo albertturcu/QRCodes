@@ -24,7 +24,7 @@ class index(TemplateView, models.Model):
             
             image_as_str = qrcode.png_as_base64_str(scale=5)
             self.html_img = 'data:image/png; base64,{}'.format(image_as_str)
-            
+          
             url_db = Url(url=text, qrcode = self.html_img)
             url_db.save()
             
