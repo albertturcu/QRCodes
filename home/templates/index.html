@@ -1,0 +1,12 @@
+<h1>Generate QRCodes</h1>
+{% extends "nav.html" %}
+    
+{% block body %}
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type='submit'>Generate QR Code</button>
+    </form>
+</div>
+{% endblock %}
