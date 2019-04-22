@@ -21,3 +21,4 @@ class index(TemplateView):
     #     qrcode.png(img_string, scale=5)
     #     # return render(request, 'index.html', img)
     #     return HttpResponse(template.render(request,body=img_string.getvalue(), content_type="image/png", content_disposition='attachment; filename="url.png"'))
+    

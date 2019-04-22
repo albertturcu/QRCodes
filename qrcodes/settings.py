@@ -77,7 +77,11 @@ WSGI_APPLICATION = 'qrcodes.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': 'qrcodes1',
+        'USER': 'qrcodes1',
+        'PASSWORD': 'Uq1gh-i40~MK',
+        'HOST': 'den1.mysql2.gear.host',
+        'PORT': '3306',
     }
 }
 
