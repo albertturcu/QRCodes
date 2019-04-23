@@ -2,6 +2,7 @@ from django import forms
 from home.models import Url
 from home.models import Vcard
 from home.models import Wifi
+from home.models import SECURITY_CHOICES
 
 class HomeForm(forms.ModelForm):
     url = forms.CharField()
@@ -21,14 +22,13 @@ class VCardForm(forms.ModelForm):
         model = Vcard
         fields = ('name','email','phone','address','country')
 
-SECURITY_CHOICES=[
-    ('No password required'),
-    ('WPA/WPA2'),
-    ('WEP'),
-]
+
 class WifiForm(forms.ModelForm):
     ssid = forms.CharField()
-    security = forms.CharField(widget=forms.Select(choices=SECURITY_CHOICES))
+    # security = forms.MultipleChoiceField(widget=forms.Select(choices=SECURITY_CHOICES))
+   
+    security = forms.CharField(max_length=5,widget=forms.Select(choices=SECURITY_CHOICES))
+
     password = forms.CharField()
  
     class Meta:
