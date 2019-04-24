@@ -24,4 +24,6 @@ class Wifi(models.Model):
     # security = models.CharField(max_length=100)
     security = models.CharField(max_length=5, choices= SECURITY_CHOICES)
     password = models.CharField(max_length=100)
+    qrcode = models.CharField(max_length=1000)
+
     

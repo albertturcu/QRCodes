@@ -6,7 +6,14 @@ from home.forms import VCardForm
 from home.forms import WifiForm
 from django.db import models
 from home.models import Url
+from home.models import Wifi
 import requests 
+import wifi_qrcode_generator
+from PIL import Image
+import base64
+from io import BytesIO
+
+
 
 # Create your views here.
 class index(TemplateView, models.Model):
@@ -66,9 +73,43 @@ class VcardPage(TemplateView):
     
             return render(request, self.template_name, {'qrcode':self.html_img, 'form': form})
     
-class WifiPage(TemplateView):
+class WifiPage(TemplateView, models.Model):
     template_name='wifi.html'
+    html_img = ''
 
     def get(self, request):
         form = WifiForm()
         return render(request, self.template_name, {'form': form})
+
+    def post(self,request):
+        form = WifiForm(request.POST)
+        if form.is_valid():
+            ssid = form.cleaned_data['ssid']
+            security = form.cleaned_data['security']
+            password = form.cleaned_data['password']
+
+            #generate qrcode
+            wifiqr = wifi_qrcode_generator.wifi_qrcode(ssid,False,security,password)
+
+            #decode qrcode
+            buffered = BytesIO()
+            wifiqr.save(buffered, format="PNG")
+            img_b = base64.b64encode(buffered.getvalue())
+
+            #Convert img_b(bytes object ) to string
+            img_str=img_b.decode("utf-8")  
+
+
+            self.html_img = 'data:image/png; base64,{}'.format(img_str)
+
+            #save in the database
+            wifi_db = Wifi(ssid=ssid, security=security,password=password,qrcode = self.html_img)
+            wifi_db.save()
+
+            form = WifiForm()
+
+
+            return render(request, self.template_name, {'wifiqr':self.html_img, 'form': form})
+        
+        args = {'form': form, 'ssid': ssid, 'security': security, 'password':password}
+        return render(request, self.template_name, args)

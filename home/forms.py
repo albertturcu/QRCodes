@@ -29,7 +29,7 @@ class WifiForm(forms.ModelForm):
    
     security = forms.CharField(max_length=5,widget=forms.Select(choices=SECURITY_CHOICES))
 
-    password = forms.CharField()
+    password = forms.CharField(widget=forms.PasswordInput())
  
     class Meta:
         model = Wifi
