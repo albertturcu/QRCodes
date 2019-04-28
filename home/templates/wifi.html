@@ -1,7 +1,6 @@
 {% extends "nav.html" %}
     
 {% block body %}
-
 <div class="container">
     <form method="post">
         {% csrf_token %}
@@ -10,7 +9,21 @@
         {{text}}
     </form>
     <p>Your QR Code</p>
-    <img src="{{wifiqr}}">
-        
+    <img src="{{qrcode}}">
+    {% if qrcode %}<a href='{{qrcode}}' download='wifiqr.png'>Download as PNG</a> {% endif %}
+    {% if qrcode %}<a href='{{qrcodesvg}}' donwload='wifiqr.svg'>Download SVG</a> {% endif %}
+    {% if qrcode %}<a href='{{qrcodeeps}}' download='wifiqr.eps'>Download as EPS</a> {% endif %}
 </div>
+<script>
+    var password_field = $('#id_password');
+    password_field.prop('disabled', true);
+    console.log(password_field)
+    $("#id_security").change(function() {
+        if ($(this).val() === 'WPA' || $(this).val() === 'WEP') {
+            password_field.prop('disabled', false);
+        } else {
+            password_field.prop('disabled', true);
+        }
+    });
+</script>
 {% endblock %} 

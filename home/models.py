@@ -1,12 +1,12 @@
 from django.db import models
 
-
-
-SECURITY_CHOICES=[
-    ('Password', 'No password required' ),
-    ('WPA','WPA/WPA2' ),
-    ('WEP','WEP'),
+SECURITY_CHOICES = [
+    ('Password', 'No password required'),
+    ('WPA', 'WPA/WPA2'),
+    ('WEP', 'WEP'),
 ]
+
+
 # Create your models here.
 class Url(models.Model):
     url = models.CharField(max_length=100)
@@ -21,9 +21,6 @@ class Vcard(models.Model):
 
 class Wifi(models.Model):
     ssid = models.CharField(max_length=100)
-    # security = models.CharField(max_length=100)
-    security = models.CharField(max_length=5, choices= SECURITY_CHOICES)
+    security = models.CharField(max_length=100, choices=SECURITY_CHOICES)
     password = models.CharField(max_length=100)
     qrcode = models.CharField(max_length=1000)
-
-    

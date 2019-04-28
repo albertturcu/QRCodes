@@ -1,4 +1,3 @@
-<h1>Generate QRCodes</h1>
 {% extends "nav.html" %}
     
 {% block body %}
@@ -11,7 +10,8 @@
     </form>
     <p>Your QR Code</p>
     <img src="{{qrcode}}">
-    <button type='submit'>Download your QR Code</button>
-        
+    {% if qrcode %}<a href='{{qrcode}}' Download='url.png'>Download as PNG</a> {% endif %}
+    {% if qrcode %}<a href='{{qrcodesvg}}' Download='url.svg'>Download as SVG</a> {% endif %}
+    {% if qrcode %}<a href='{{qrcodeeps}}' Download='url.eps'>Download as EPS</a> {% endif %}
 </div>
 {% endblock %} 

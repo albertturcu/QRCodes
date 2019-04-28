@@ -10,6 +10,10 @@
         <button type='submit'>Generate QR Code</button>
         {{text}}
     </form>
-        
+    <p>Your QR Code</p>
+    <img src="{{vcard}}">
+    {% if vcard %}<button type='submit'>Download as PNG</button> {% endif %}
+    {% if vcard %}<button type='submit'>Download as SVG</button> {% endif %}
+    {% if vcard %}<button type='submit'>Download as EPS</button> {% endif %} 
 </div>
 {% endblock %} 

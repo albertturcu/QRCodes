@@ -4,7 +4,8 @@ from home.models import Vcard
 from home.models import Wifi
 from home.models import SECURITY_CHOICES
 
-class HomeForm(forms.ModelForm):
+
+class UrlForm(forms.ModelForm):
     url = forms.CharField()
     
     class Meta:
@@ -24,12 +25,9 @@ class VCardForm(forms.ModelForm):
 
 
 class WifiForm(forms.ModelForm):
-    ssid = forms.CharField()
-    # security = forms.MultipleChoiceField(widget=forms.Select(choices=SECURITY_CHOICES))
-   
-    security = forms.CharField(max_length=5,widget=forms.Select(choices=SECURITY_CHOICES))
-
-    password = forms.CharField(widget=forms.PasswordInput())
+    ssid = forms.CharField(max_length=20)
+    security = forms.CharField(widget=forms.Select(choices=SECURITY_CHOICES))
+    password = forms.CharField(widget=forms.PasswordInput(), required=False)
  
     class Meta:
         model = Wifi
