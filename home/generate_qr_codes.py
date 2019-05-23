@@ -16,9 +16,7 @@ def create_qrcode(form , args: dict, qr_type: str):
         vcard_string = create_vcard(args)
         print(vcard_string)
         qrcode = pyqrcode.create(vcard_string)
-        with open('vcard.vcf', 'w') as f:
-            f.write(vcard_string)
-            context = {'vcard': f}
+        context = {'vcard': 'data:text/plain; base64,{}'.format(base64.b64encode(io.BytesIO(bytes(vcard_string, encoding='utf-8')).getvalue()).decode('utf-8'))}
     elif qr_type == 'wifi':
         qrcode = pyqrcode.create(
             f"WIFI:S:{args['ssid']};T:{args['security']};P:{args['password']};;")

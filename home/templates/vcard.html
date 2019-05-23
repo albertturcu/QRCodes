@@ -22,7 +22,7 @@
                         {% if qrcode %}<li style="margin-top: 5px"><a class="btn btn-info" style="width: 200px" href='{{qrcode}}' download='vcardqr.png'>Download as PNG</a></li> {% endif %}
                         {% if qrcode %}<li style="margin-top: 5px"><a class="btn btn-info" style="width: 200px" href='{{qrcodesvg}}' donwload='vcardqr.svg'>Download SVG</a></li> {% endif %}
                         {% if qrcode %}<li style="margin-top: 5px"><a class="btn btn-info" style="width: 200px" href='{{qrcodeeps}}' download='vcardqr.eps'>Download as EPS</a></li> {% endif %}
-                        {% if qrcode %}<li style="margin-top: 5px"><a class="btn btn-info" style="width: 200px" href='vcard.vcf' download='vcard.vcf' >Download as VCard File</a></li> {% endif %}
+                        {% if qrcode %}<li style="margin-top: 5px"><a class="btn btn-info" style="width: 200px" href='{{vcard}}' download='vcard.vcf' >Download as VCard File</a></li> {% endif %}
                     </ol>
         </div>
 
