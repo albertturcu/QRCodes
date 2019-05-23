@@ -6,12 +6,19 @@ import requests
 import io
 import base64
 import pyqrcode
+import vobject 
 
 def create_qrcode(form , args: dict, qr_type: str):
+    context = {}
     if qr_type == 'url':
         qrcode = pyqrcode.create(args['url'])
     elif qr_type == 'vcard':
-        pass
+        vcard_string = create_vcard(args)
+        print(vcard_string)
+        qrcode = pyqrcode.create(vcard_string)
+        with open('vcard.vcf', 'w') as f:
+            f.write(vcard_string)
+            context = {'vcard': f}
     elif qr_type == 'wifi':
         qrcode = pyqrcode.create(
             f"WIFI:S:{args['ssid']};T:{args['security']};P:{args['password']};;")
@@ -28,7 +35,25 @@ def create_qrcode(form , args: dict, qr_type: str):
     html_img3 = 'data:image/eps; base64,{}'.format(base64.b64encode(
         string_buf.getvalue().encode('utf-8')).decode('utf-8'))
 
-    args = {'form': form, 'qrcode': html_img,
-            'qrcodesvg': html_img2, 'qrcodeeps': html_img3}
+    context = {**context, **{'form': form, 'qrcode': html_img,
+            'qrcodesvg': html_img2, 'qrcodeeps': html_img3}}
+    return context
+
+def create_vcard(args: dict):
+    vcard = vobject.vCard()
+    vcard.add('fn')
+    vcard.fn.value = args['name']
+    vcard.add('email')
+    vcard.email.value = args['email']
+    vcard.email.type_param = 'INTERNET'
+    vcard.add('tel')
+    vcard.tel.value = args['phone']
+    vcard.tel.type_param = 'MOBILE'
+    vcard.add('adr')
+    vcard.adr.value = vobject.vcard.Address(street= args['address'], country = args['country'])
     
-    return args
+    return vcard.serialize()
+
+    
+    
+    

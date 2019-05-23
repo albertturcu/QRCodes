@@ -39,16 +39,23 @@ class VcardPage(TemplateView):
     def post(self,request):
         form = VCardForm(request.POST)
         if form.is_valid():
-            
-            name = form.cleaned_data['name']
-            email = form.cleaned_data['email']
-            phone = form.cleaned_data['phone']
-            address = form.cleaned_data['address']
-            country = form.cleaned_data['country']
-
+            values = {
+                'name' : form.cleaned_data['name'],
+                'email' : form.cleaned_data['email'],
+                'phone' : form.cleaned_data['phone'],
+                'address' : form.cleaned_data['address'],
+                'country' : form.cleaned_data['country'],
+            }
             form = VCardForm()
-    
-            return render(request, self.template_name, {'qrcode':self.html_img, 'form': form})
+
+            args = create_qrcode(form, values, 'vcard')
+            
+            print(args['vcard'])
+            
+        
+            return render(request, self.template_name, args)
+        
+        return render(request, self.template_name, {'form': form})
     
 class WifiPage(TemplateView, models.Model):
     template_name='wifi.html'

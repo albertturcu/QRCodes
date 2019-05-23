@@ -1,17 +1,26 @@
 {% extends "nav.html" %}
     
 {% block body %}
-<div class="container">
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type='submit'>Generate QR Code</button>
-        {{text}}
-    </form>
-    <p>Your QR Code</p>
-    <img src="{{qrcode}}">
-    {% if qrcode %}<a href='{{qrcode}}' Download='url.png'>Download as PNG</a> {% endif %}
-    {% if qrcode %}<a href='{{qrcodesvg}}' Download='url.svg'>Download as SVG</a> {% endif %}
-    {% if qrcode %}<a href='{{qrcodeeps}}' Download='url.eps'>Download as EPS</a> {% endif %}
+<div class="container" style="border: 1px solid grey; box-shadow: 0px 0px 20px 1px black;">
+    <div class="container row" style="height: 300px;">
+        <div class="col-sm-4 text-center my-auto">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-success" type='submit'>Generate QR Code</button>
+            </form>
+        </div>
+        <div class="col-sm-4 text-center my-auto">
+            <img src="{{qrcode}}" style="heigth: 200px;width: 200px">
+        </div>
+        <div class="col-sm-4 text-center my-auto">
+
+            <ol style = "list-style-type: none">
+                {% if qrcode %}<li style="margin-top: 5px"><a class="btn btn-info" style="width: 200px" href='{{qrcode}}' Download='urlqr.png'>Download as PNG</a> </li>{% endif %}
+                {% if qrcode %}<li style="margin-top: 5px"><a class="btn btn-info" style="width: 200px" href='{{qrcodesvg}}' Download='urlqr.svg'>Download as SVG</a> </li>{% endif %}
+                {% if qrcode %}<li style="margin-top: 5px"><a class="btn btn-info" style="width: 200px" href='{{qrcodeeps}}' Download='urlqr.eps'>Download as EPS</a> </li>{% endif %}
+            </ol>
+        </div>
+    </div>
 </div>
 {% endblock %} 

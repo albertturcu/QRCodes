@@ -3,17 +3,25 @@
     
 {% block body %}
 
-<div class="container">
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type='submit'>Generate QR Code</button>
-        {{text}}
-    </form>
-    <p>Your QR Code</p>
-    <img src="{{vcard}}">
-    {% if vcard %}<button type='submit'>Download as PNG</button> {% endif %}
-    {% if vcard %}<button type='submit'>Download as SVG</button> {% endif %}
-    {% if vcard %}<button type='submit'>Download as EPS</button> {% endif %} 
+<div class="container row">
+    <div class="col-sm-4 ">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-success" type='submit'>Generate QR Code</button>
+        </form>
+    </div>
+
+    <div class="col-sm-4 text-center">
+        <img src="{{qrcode}}"  style="heigth: 200px;width: 200px">
+    </div>
+
+    <div class="col-sm-4 text-center">
+        {% if qrcode %}<a href='{{qrcode}}' download='vcardqr.png'>Download as PNG</a> {% endif %}
+        {% if qrcode %}<a href='{{qrcodesvg}}' donwload='vcardqr.svg'>Download SVG</a> {% endif %}
+        {% if qrcode %}<a href='{{qrcodeeps}}' download='vcardqr.eps'>Download as EPS</a> {% endif %}
+        {% if qrcode %}<a href='vcard.vcf' download='vcard.vcf' >Download as VCard File</a> {% endif %}
+    </div>
+
 </div>
 {% endblock %} 
