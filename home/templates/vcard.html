@@ -3,25 +3,29 @@
     
 {% block body %}
 
-<div class="container row">
-    <div class="col-sm-4 ">
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button class="btn btn-success" type='submit'>Generate QR Code</button>
-        </form>
+    <div class="container row" style="height: 300px;">
+        <div class="col-sm-4 text-center my-auto">
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button class="btn btn-success" type='submit'>Generate QR Code</button>
+            </form>
+        </div>
+
+        <div class="col-sm-4 text-center my-auto">
+            <img src="{{qrcode}}"  style="width: 200px">
+        </div>
+
+        <div class="col-sm-4 text-center my-auto">
+
+                <ol style = "list-style-type: none">
+                        {% if qrcode %}<li style="margin-top: 5px"><a class="btn btn-info" style="width: 200px" href='{{qrcode}}' download='vcardqr.png'>Download as PNG</a></li> {% endif %}
+                        {% if qrcode %}<li style="margin-top: 5px"><a class="btn btn-info" style="width: 200px" href='{{qrcodesvg}}' donwload='vcardqr.svg'>Download SVG</a></li> {% endif %}
+                        {% if qrcode %}<li style="margin-top: 5px"><a class="btn btn-info" style="width: 200px" href='{{qrcodeeps}}' download='vcardqr.eps'>Download as EPS</a></li> {% endif %}
+                        {% if qrcode %}<li style="margin-top: 5px"><a class="btn btn-info" style="width: 200px" href='vcard.vcf' download='vcard.vcf' >Download as VCard File</a></li> {% endif %}
+                    </ol>
+        </div>
+
     </div>
 
-    <div class="col-sm-4 text-center">
-        <img src="{{qrcode}}"  style="heigth: 200px;width: 200px">
-    </div>
-
-    <div class="col-sm-4 text-center">
-        {% if qrcode %}<a href='{{qrcode}}' download='vcardqr.png'>Download as PNG</a> {% endif %}
-        {% if qrcode %}<a href='{{qrcodesvg}}' donwload='vcardqr.svg'>Download SVG</a> {% endif %}
-        {% if qrcode %}<a href='{{qrcodeeps}}' download='vcardqr.eps'>Download as EPS</a> {% endif %}
-        {% if qrcode %}<a href='vcard.vcf' download='vcard.vcf' >Download as VCard File</a> {% endif %}
-    </div>
-
-</div>
 {% endblock %} 

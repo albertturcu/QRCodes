@@ -1,7 +1,7 @@
 {% extends "nav.html" %}
     
 {% block body %}
-<div class="container" style="border: 1px solid grey; box-shadow: 0px 0px 20px 1px black;">
+
     <div class="container row" style="height: 300px;">
         <div class="col-sm-4 text-center my-auto">
             <form method="post">
@@ -11,7 +11,7 @@
             </form>
         </div>
         <div class="col-sm-4 text-center my-auto">
-            <img src="{{qrcode}}" style="heigth: 200px;width: 200px">
+            <img src="{{qrcode}}" style="width: 200px">
         </div>
         <div class="col-sm-4 text-center my-auto">
 
@@ -22,5 +22,5 @@
             </ol>
         </div>
     </div>
-</div>
+
 {% endblock %} 
