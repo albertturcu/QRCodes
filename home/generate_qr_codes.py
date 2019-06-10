@@ -8,24 +8,34 @@ import base64
 import pyqrcode
 import vobject 
 
-def create_qrcode(form , args: dict, qr_type: str):
-    context = {}
-    if qr_type == 'url':
-        qrcode = pyqrcode.create(args['url'])
-    elif qr_type == 'vcard':
-        vcard_string = create_vcard(args)
-        print(vcard_string)
-        qrcode = pyqrcode.create(vcard_string)
-        context = {'vcard': 'data:text/plain; base64,{}'.format(base64.b64encode(io.BytesIO(bytes(vcard_string, encoding='utf-8')).getvalue()).decode('utf-8'))}
-    elif qr_type == 'wifi':
-        qrcode = pyqrcode.create(
-            f"WIFI:S:{args['ssid']};T:{args['security']};P:{args['password']};;")
 
-    image_as_str = qrcode.png_as_base64_str(scale=5)
+def url_qr(context: dict):
+    form =  UrlForm()
+    qrcode = pyqrcode.create(context['url'])
+    return create_qrcode(form, context, qrcode)
+
+
+def vcard_qr(context: dict):
+    form = VCardForm()
+    vcard_string = create_vcard(context)
+    qrcode = pyqrcode.create(vcard_string)
+    context = {**context,**{'vcard': 'data:text/plain; base64,{}'.format(base64.b64encode(io.BytesIO(bytes(vcard_string, encoding='utf-8')).getvalue()).decode('utf-8'))}}
+    return create_qrcode(form, context, qrcode)
+
+
+def wifi_qr(context: dict):
+    form = WifiForm()
+    qrcode = pyqrcode.create(
+        f"WIFI:S:{context['ssid']};T:{context['security']};P:{context['password']};;")
+    return create_qrcode(form, context, qrcode)
+
+def create_qrcode(form, context: dict, *args):
+       
+    image_as_str = args[0].png_as_base64_str(scale=5)
     bytes_buf = io.BytesIO()
     string_buf = io.StringIO()
-    qrcode.svg(bytes_buf, scale=5)
-    qrcode.eps(string_buf, scale=5)
+    args[0].svg(bytes_buf, scale=5)
+    args[0].eps(string_buf, scale=5)
 
     html_img = 'data:image/png; base64,{}'.format(image_as_str)
     html_img2 = 'data:image/svg; base64,{}'.format(
@@ -49,7 +59,7 @@ def create_vcard(args: dict):
     vcard.tel.type_param = 'MOBILE'
     vcard.add('adr')
     vcard.adr.value = vobject.vcard.Address(street= args['address'], country = args['country'])
-    
+
     return vcard.serialize()
 
     

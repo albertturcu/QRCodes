@@ -6,7 +6,6 @@ SECURITY_CHOICES = [
     ('WEP', 'WEP'),
 ]
 
-
 # Create your models here.
 class Url(models.Model):
     url = models.CharField(max_length=100)
