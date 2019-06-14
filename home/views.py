@@ -30,7 +30,8 @@ class UrlPage(TemplateView, models.Model):
          
         return render(request, self.template_name, {'form': form})
 
-class VcardPage(TemplateView):
+
+class VcardPage(TemplateView, models.Model):
     template_name='vcard.html'
 
     def get(self, request):
@@ -38,9 +39,9 @@ class VcardPage(TemplateView):
         return render(request, self.template_name, {'form': form})
     
     def post(self,request):
+        fields = ['address', 'email', 'name', 'phone', 'country']
+        
         if request.POST['action'] == 'upload':
-            data = {'name': '', 'email': '', 'phone': '', 'address': '', 'country': ''}
-            
             myfile = request.FILES['myfile']
             fs = FileSystemStorage()
             filename = fs.save(myfile.name, myfile)
@@ -48,25 +49,19 @@ class VcardPage(TemplateView):
             with open(filename, 'r') as f:
                 text = f.read()
                 text = text.splitlines()
-                data['address'] = text[2].split(';;')[1].replace('\\','')
-                data['email'] = text[3].split(':')[1]
-                data['name'] = text[4].split(':')[1]
-                data['phone'] = text[5].split(':')[1]
-                data['country'] = text[2].split(';;')[3].replace(';','')
+                del text[:2], text[-1]
+                text[0] = text[0].replace('\\','').replace(';',' ')
+                country = text[0].split('   ')[1]
+                text[0] = text[0].split('   ')[0]
+                text.append('Country:' + country)
+                data = {fields[i]: text[i].split(':')[1] for i in range(5)}
+                form = VCardForm(initial = data)
                 
-            form = VCardForm(initial = data)
             return render(request, self.template_name, {'form': form})
         elif request.POST['action'] == 'generate':
             form = VCardForm(request.POST)
             if form.is_valid():
-                values = {
-                    'name': form.cleaned_data['name'],
-                    'email': form.cleaned_data['email'],
-                    'phone': form.cleaned_data['phone'],
-                    'address': form.cleaned_data['address'],
-                    'country': form.cleaned_data['country'],
-                }
-
+                values = {fields[i]:form.cleaned_data[fields[i]] for i in range(5)}
                 args = vcard_qr(values)
 
                 return render(request, self.template_name, args)

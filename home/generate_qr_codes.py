@@ -9,25 +9,25 @@ import pyqrcode
 import vobject 
 
 
-def url_qr(context: dict):
+def url_qr(context: dict) -> dict:
     form =  UrlForm()
     qrcode = pyqrcode.create(context['url'])
     return create_qrcode(form, context, qrcode)
 
-def vcard_qr(context: dict):
+def vcard_qr(context: dict) -> dict:
     form = VCardForm()
     vcard_string = create_vcard(context)
     qrcode = pyqrcode.create(vcard_string)
     context = {**context,**{'vcard': 'data:text/plain; base64,{}'.format(base64.b64encode(io.BytesIO(bytes(vcard_string, encoding='utf-8')).getvalue()).decode('utf-8'))}}
     return create_qrcode(form, context, qrcode)
 
-def wifi_qr(context: dict):
+def wifi_qr(context: dict) -> dict:
     form = WifiForm()
     qrcode = pyqrcode.create(
         f"WIFI:S:{context['ssid']};T:{context['security']};P:{context['password']};;")
     return create_qrcode(form, context, qrcode)
 
-def create_qrcode(form, context: dict, *args):   
+def create_qrcode(form, context: dict, *args) -> dict:   
     image_as_str = args[0].png_as_base64_str(scale=5)
     bytes_buf = io.BytesIO()
     string_buf = io.StringIO()
@@ -44,7 +44,7 @@ def create_qrcode(form, context: dict, *args):
             'qrcodesvg': html_img2, 'qrcodeeps': html_img3}}
     return context
 
-def create_vcard(args: dict):
+def create_vcard(args: dict) -> str:
     vcard = vobject.vCard()
     vcard.add('fn')
     vcard.fn.value = args['name']
