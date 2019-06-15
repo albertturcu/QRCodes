@@ -57,9 +57,11 @@ class VcardPage(TemplateView, models.Model):
                     data = {fields[i]: text[i].split(':')[1] for i in range(5)}
                     form = VCardForm(initial = data)     
                 return render(request, self.template_name, {'form': form})
-            except Exception:
-                return render(request, self.template_name, {'form': form, 'error': 'FileType not valid'})
-
+            except Exception: 
+                if not myfile.name.endswith('.vcf'):
+                    return render(request, self.template_name, {'form': form, 'error': 'FileType not valid'})
+                else:
+                    return render(request, self.template_name, {'form': form, 'error': 'Unkown error'})
         elif request.POST['action'] == 'generate':
             form = VCardForm(request.POST)
             vcard_thread = threading.Thread(target=save_form, args=(form,))
