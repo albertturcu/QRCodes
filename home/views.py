@@ -6,10 +6,10 @@ from django.db import models
 from home.forms import UrlForm
 from home.forms import VCardForm
 from home.forms import WifiForm
+from home.forms import save_form
 from home.generate_qr_codes import url_qr
 from home.generate_qr_codes import wifi_qr
 from home.generate_qr_codes import vcard_qr
-from home.generate_qr_codes import save_form
 
 import requests
 import threading
@@ -53,15 +53,15 @@ class VcardPage(TemplateView, models.Model):
             
             try:
                 with open(filename, 'r') as f:
-                    text = self.process_vcard_file()
+                    text = self.process_vcard_file(f)
                     data = {fields[i]: text[i].split(':')[1] for i in range(5)}
                     form = VCardForm(initial = data)     
                 return render(request, self.template_name, {'form': form})
             except Exception: 
                 if not myfile.name.endswith('.vcf'):
-                    return render(request, self.template_name, {'form': form, 'error': 'FileType not valid'})
+                    return render(request, self.template_name, {'form': VCardForm(), 'error': 'FileType not valid'})
                 else:
-                    return render(request, self.template_name, {'form': form, 'error': 'Unkown error'})
+                    return render(request, self.template_name, {'form': VCardForm(), 'error': 'Unkown error'})
         elif request.POST['action'] == 'generate':
             form = VCardForm(request.POST)
             vcard_thread = threading.Thread(target=save_form, args=(form,))

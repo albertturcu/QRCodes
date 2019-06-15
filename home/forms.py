@@ -4,6 +4,8 @@ from home.models import Vcard
 from home.models import Wifi
 from home.models import SECURITY_CHOICES
 
+import time
+
 
 class UrlForm(forms.ModelForm):
     url = forms.CharField()
@@ -32,3 +34,8 @@ class WifiForm(forms.ModelForm):
     class Meta:
         model = Wifi
         fields = ('ssid','security','password')
+
+def save_form(form):
+    form.save()
+    time.sleep(0.2)
+    

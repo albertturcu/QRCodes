@@ -60,8 +60,4 @@ def create_vcard(args: dict) -> str:
 
     return vcard.serialize()
 
-def save_form(form):
-    form.save()
-    time.sleep(0.2)
-    
     
