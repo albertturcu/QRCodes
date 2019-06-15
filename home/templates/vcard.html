@@ -13,8 +13,8 @@
 
             <form method="post" enctype="multipart/form-data" class="col-xs-12 text-center">
                 {% csrf_token %}
-                File: <input name="myfile" type="file">
-                <input class="btn btn-success" name="action" type="submit" value="upload">
+                File: <input name="myfile" required type="file">
+                <input class="btn btn-success" name="action" required type="submit" value="upload">
             </form>
         </div>
 
@@ -31,7 +31,9 @@
                     {% if qrcode %}<li style="margin-top: 5px"><a class="btn btn-info" style="width: 200px" href='{{vcard}}' download='vcard.vcf' >Download as VCard File</a></li> {% endif %}
                 </ol>
         </div>
-
+    </div>
+    <div class="col-sm-4 text-center my-auto">
+            <p>{{error}}</p>
     </div>
 
 {% endblock %} 

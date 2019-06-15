@@ -7,6 +7,7 @@ import io
 import base64
 import pyqrcode
 import vobject 
+import time
 
 
 def url_qr(context: dict) -> dict:
@@ -59,6 +60,8 @@ def create_vcard(args: dict) -> str:
 
     return vcard.serialize()
 
-    
+def save_form(form):
+    form.save()
+    time.sleep(0.2)
     
     
